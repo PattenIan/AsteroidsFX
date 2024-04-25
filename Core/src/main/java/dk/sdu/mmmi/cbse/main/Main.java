@@ -88,7 +88,8 @@ public class Main extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
+                DeltaTime.calcDeltaTime();
+                update(DeltaTime.getDeltaTime());
                 draw();
                 gameData.getKeys().update();
             }
@@ -96,12 +97,12 @@ public class Main extends Application {
         }.start();
     }
 
-    private void update() {
+    private void update(double dt) {
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
-            entityProcessorService.process(gameData, world);
+            entityProcessorService.process(gameData, world, dt);
         }
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
-            postEntityProcessorService.process(gameData, world);
+            postEntityProcessorService.process(gameData, world, dt);
         }       
     }
 
