@@ -7,9 +7,8 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
-import java.util.Collection;
-import java.util.Map;
-import java.util.ServiceLoader;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import static java.util.stream.Collectors.toList;
 import javafx.animation.AnimationTimer;
@@ -88,7 +87,8 @@ public class Main extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
+                DeltaTime.calcDeltaTime();
+                update(DeltaTime.getDeltaTime());
                 draw();
                 gameData.getKeys().update();
             }
@@ -96,16 +96,17 @@ public class Main extends Application {
         }.start();
     }
 
-    private void update() {
+    private void update(double dt) {
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
-            entityProcessorService.process(gameData, world);
+            entityProcessorService.process(gameData, world, dt);
         }
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
-            postEntityProcessorService.process(gameData, world);
+            postEntityProcessorService.process(gameData, world, dt);
         }       
     }
 
-    private void draw() {        
+    private void draw() {
+        List<Entity> toRemove = new ArrayList<>();
         for (Entity polygonEntity : polygons.keySet()) {
             if(!world.getEntities().contains(polygonEntity)){   
                 Polygon removedPolygon = polygons.get(polygonEntity);               
@@ -124,7 +125,20 @@ public class Main extends Application {
             polygon.setTranslateX(entity.getX());
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
+
+            if (entity.getX() > gameData.getDisplayWidth() || entity.getY() > gameData.getDisplayHeight() || entity.getX() < 0 || entity.getY() < 0) {
+                toRemove.add(entity);
+            }
         }
+
+        for(Entity entity : toRemove){
+            Polygon polygon = polygons.remove(entity);
+            if(polygon != null){
+                gameWindow.getChildren().remove(polygon);
+            }
+            world.removeEntity(entity);
+        }
+
 
     }
 

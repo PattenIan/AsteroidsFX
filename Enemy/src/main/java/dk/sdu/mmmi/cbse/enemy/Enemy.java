@@ -1,12 +1,8 @@
-package dk.sdu.mmmi.cbse.playersystem;
+package dk.sdu.mmmi.cbse.enemy;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 
-/**
- *
- * @author Emil
- */
-public class Player extends Entity {
+public class Enemy extends Entity {
     private double lastShotTime = 0; // Time since last shot
 
     public double getLastShotTime() {
