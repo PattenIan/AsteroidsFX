@@ -101,7 +101,7 @@ public class Main extends Application {
             entityProcessorService.process(gameData, world, dt);
         }
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
-            postEntityProcessorService.process(gameData, world, dt);
+            postEntityProcessorService.process(gameData, world);
         }       
     }
 
