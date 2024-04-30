@@ -1,9 +1,13 @@
 package dk.sdu.mmmi.cbse.collisionsystem;
 
+import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionDetector implements IPostEntityProcessingService {
 
@@ -11,7 +15,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
     }
 
     @Override
-    public void process(GameData gameData, World world, double dt) {
+    public void process(GameData gameData, World world) {
         // two for loops for all entities in the world
         for (Entity entity1 : world.getEntities()) {
             for (Entity entity2 : world.getEntities()) {
@@ -23,12 +27,17 @@ public class CollisionDetector implements IPostEntityProcessingService {
 
                 // CollisionDetection
                 if (this.collides(entity1, entity2)) {
-                    world.removeEntity(entity1);
-                    world.removeEntity(entity2);
+                    if(entity1.getClass().equals(Bullet.class))
+                            world.removeEntity(entity1);
+                    if(entity2.getClass().equals(Bullet.class))
+                        world.removeEntity(entity2);
+                    if(entity1.getClass().equals(entity2.getClass())){
+                        return;}
+                    entity1.takeDamage(entity2.getDamage());
+                    entity2.takeDamage(entity1.getDamage());
                 }
             }
         }
-
     }
 
     public Boolean collides(Entity entity1, Entity entity2) {
