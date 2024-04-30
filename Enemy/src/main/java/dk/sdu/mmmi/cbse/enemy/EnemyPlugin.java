@@ -22,11 +22,13 @@ public class EnemyPlugin implements IGamePluginService {
     }
 
     private Entity createEnemyShip(GameData gameData) {
-
         Entity enemyShip = new Enemy();
-        enemyShip.setPolygonCoordinates(-8,8,-6, 8, -6, 6, -4, 6, -4, 4, 2, 4, 2, 6, 4, 6, 4, 8, 6, 8, 6, 6, 4, 6, 4, 4, 6, 4, 6, 2, 8, 2, 8, 0, 10, 0, 10, -6, 8, -6, 8, -2, 6, -2, 6, -6, 4, -6, 4, -8, 0, -8, 0, -6, 4, -6, 4, -4, -6, -4, -6, -6, -2, -6, -2, -8, -6, -8, -6, -6, -8, -6, -8, -2, -10, -2, -10, -6, -12, -6, -12, 0, -10, 0, -10, 2, -8, 2, -8, 4, -6, 4, -6, 6, -8, 6, -8, 8);
+        enemyShip.setHealth(3);
+        enemyShip.setDamage(5);
+        enemyShip.setPolygonCoordinates(-5,-5,10,0,-5,5);
         enemyShip.setX(gameData.getDisplayHeight()/2);
         enemyShip.setY(gameData.getDisplayWidth()/2);
+        enemyShip.setRadius(8);
         return enemyShip;
     }
 

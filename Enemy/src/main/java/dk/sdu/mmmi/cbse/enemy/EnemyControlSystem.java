@@ -29,7 +29,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
             enemy.setRotation(enemy.getRotation() + (randint.nextDouble(5)-2) * moveSpeed * deltaTime);
 
             ((Enemy) enemy).setLastShotTime(((Enemy) enemy).getLastShotTime() + deltaTime);
-
+            if(!enemy.isAlive())
+                world.removeEntity(enemy);
             // Check if space is pressed and cooldown has elapsed
             if (((Enemy) enemy).getLastShotTime() >= fireRate) {
                 getBulletSPIs().stream().findFirst().ifPresent(spi -> {

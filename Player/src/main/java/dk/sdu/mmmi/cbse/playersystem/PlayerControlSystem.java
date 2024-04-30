@@ -26,6 +26,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
             return;
         }
         Player player = (Player) playerList.getFirst();
+        if(!player.isAlive())
+            world.removeEntity(player);
         // Multiplying by delta time to make the game framerate independent
         if (gameData.getKeys().isDown(GameKeys.LEFT)) {
             player.setRotation(player.getRotation() - rotationSpeed * dt);
