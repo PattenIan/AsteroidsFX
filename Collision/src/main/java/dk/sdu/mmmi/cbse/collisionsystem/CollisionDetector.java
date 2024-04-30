@@ -22,7 +22,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
 
                 // if the two entities are identical, skip the iteration
                 if (entity1.getID().equals(entity2.getID())) {
-                    continue;                    
+                    continue;
                 }
 
                 // CollisionDetection
@@ -31,8 +31,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             world.removeEntity(entity1);
                     if(entity2.getClass().equals(Bullet.class))
                         world.removeEntity(entity2);
-                    if(entity1.getClass().equals(entity2.getClass())){
-                        return;}
+                    if(entity1.getClass().equals(entity2.getClass()))
+                        return;
                     entity1.takeDamage(entity2.getDamage());
                     entity2.takeDamage(entity1.getDamage());
                 }

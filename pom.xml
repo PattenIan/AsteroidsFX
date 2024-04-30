@@ -20,6 +20,8 @@
         <module>Asteroids</module>
         <module>Collision</module>
         <module>Enemy</module>
+        <module>X_JPMS1</module>
+        <module>X_JPMS2</module>
     </modules>
     <properties>
         <java>java</java>
