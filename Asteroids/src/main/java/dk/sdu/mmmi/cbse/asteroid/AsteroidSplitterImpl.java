@@ -13,11 +13,23 @@ import java.util.Random;
  */
 public class AsteroidSplitterImpl implements IAsteroidSplitter {
 
+    /**
+     * Creates smaller asteroids if a bigger one is destroyed
+     * preconditions:
+     * - e must be non-null and should be an Asteroid
+     * - world must be non-null and should be able to add new entities (Asteroids)
+     *
+     * postconditions:
+     * - returns if e is not an asteroid
+     * - calls createSmallerAsteroids method
+     * - Based on the original asteroid the new asteroids are half the size and go in opposite directions from eachother
+     * - The new asteroids are added to the world.
+     */
     @Override
     public void createSplitAsteroid(Entity e, World world) {
         if (!(e instanceof Asteroid))
             return;
-        //Cast to e to Astreroid and get radius
+        //Cast to e to Asteroid and get radius
         Asteroid ogAsteroid = (Asteroid) e;
         float ogRad = ogAsteroid.getRadius();
 
@@ -33,12 +45,24 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         }
     }
 
+    /**
+     * Creates the smaller asteroids
+     * Preconditions:
+     * - Size should be non-null and be positive
+     * - originalAsteroid should be non-null and an asteroid
+     * - speedModifier should be not zero.
+     *
+     * postconditions:
+     * - Create a new, randomized, and smaller asteroid based on the previous asteroid
+     * - The speedmodifier, damage and health are set, so they're not zero .
+     */
     public Asteroid createSmallerAsteroid(float size, Asteroid originalAsteroid, int speedModifier) {
         Random rnd = new Random();
         Asteroid asteroid = new Asteroid();
         asteroid.setRadius(size);
         asteroid.setHealth(1);
         asteroid.setDamage(originalAsteroid.getDamage());
+        if(speedModifier == 0){ speedModifier = 1; }
         asteroid.setSpeedModifier(speedModifier);
         float[] rndScales = new float[4];
         for (int i = 0; i < rndScales.length; i++) {

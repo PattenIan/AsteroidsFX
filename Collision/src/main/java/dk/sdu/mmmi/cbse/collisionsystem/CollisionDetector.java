@@ -32,8 +32,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
                     if(entity2.getClass().equals(Bullet.class))
                         world.removeEntity(entity2);
                     if(entity1.getClass().equals(entity2.getClass())){
-                        System.out.println(entity1.getClass() + " " + entity2.getClass());
-                        System.out.println(entity1.isAlive() + " " + entity2.isAlive());
                         return;}
                     entity1.takeDamage(entity2.getDamage());
                     entity2.takeDamage(entity1.getDamage());

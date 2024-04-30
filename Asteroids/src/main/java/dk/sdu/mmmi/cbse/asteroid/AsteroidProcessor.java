@@ -14,6 +14,19 @@ public class AsteroidProcessor implements IEntityProcessingService {
 
     private IAsteroidSplitter asteroidSplitter = new AsteroidSplitterImpl();
 
+    /**
+     * Processes the asteroids by updating their positions, checking for destruction, and handling off-screen movement.
+     * Preconditions:
+     *  - gameData must not be null and must contain current game settings like display dimensions.
+     *  - world must not be null and must contain the current game entities.
+     *  - dt (deltaTime) must be non-null and should be a positive double representing the time elapsed since the last update.
+     *
+     * Postconditions:
+     *  - Asteroids continue moving at consistent speeds adjusted by deltaTime.
+     *  - Asteroids larger than a specific size (radius > 10) that are destroyed are split into smaller asteroids.
+     *  - Destroyed asteroids are removed from the game world.
+     *  - Asteroids that move off-screen reappear on the opposite side, maintaining continuous movement.
+     */
     @Override
     public void process(GameData gameData, World world, double dt) {
         int asteroidSpeed = 200;
