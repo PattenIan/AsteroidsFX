@@ -36,8 +36,10 @@ public class AsteroidProcessor implements IEntityProcessingService {
         }
         for (Asteroid asteroid : asteroids) {
             if(!asteroid.isAlive()){
-                if(asteroid.getRadius() > 10)
-                    asteroidSplitter.createSplitAsteroid(asteroid, world);
+                System.out.println("Dying asteroid");
+                if(asteroid.getRadius() > 10){
+                    //System.out.println("Big asteroid: " + asteroid.getRadius());
+                    asteroidSplitter.createSplitAsteroid(asteroid, world);}
                 world.removeEntity(asteroid);
             }
             double changeX = Math.cos(Math.toRadians(asteroid.getRotation())) + asteroidSpeed * dt * asteroid.getSpeedModifier();

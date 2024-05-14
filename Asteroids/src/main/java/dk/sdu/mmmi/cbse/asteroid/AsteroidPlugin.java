@@ -24,7 +24,7 @@ public class AsteroidPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
         Entity asteroid = createAsteroid(gameData);
         world.addEntity(asteroid);
-        System.out.println(asteroid.getRadius());
+        System.out.println(asteroid.getRadius() + " asteroid radius");
     }
 
     /**
