@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+activate Main
+Main -> Main: start()
+
+Main -> ServiceLoader: getGamePluginServices()
+activate ServiceLoader
+
+ServiceLoader --> Main: list of IGamePluginServices
+deactivate ServiceLoader
+
+loop every implementation of IGamePluginService
+    Main -> IGamePluginService: start()
+    activate IGamePluginService
+    IGamePluginService --> Main: return
+    deactivate IGamePluginService
+end
+
+loop every frame
+    Main -> Main: update()
+
+    Main -> ServiceLoader: getEntityProcessingServices()
+    activate ServiceLoader
+
+    ServiceLoader --> Main: list of IEntityProcessingServices
+    deactivate ServiceLoader
+
+    loop every implementation of IEntityProcessingService
+        Main -> IEntityProcessingService: process()
+        activate IEntityProcessingService
+        IEntityProcessingService --> Main: return
+        deactivate IEntityProcessingService
+    end
+
+    Main -> ServiceLoader: getPostEntityProcessingServices()
+    activate ServiceLoader
+
+    ServiceLoader --> Main: list of IEntityProcessingServices
+    deactivate ServiceLoader
+
+    loop every implementation of IPostEntityProcessingService
+        Main -> IPostEntityProcessingService: process()
+        activate IPostEntityProcessingService
+        IPostEntityProcessingService --> Main: return
+        deactivate IPostEntityProcessingService
+    end
+end
+@enduml

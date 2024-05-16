@@ -18,6 +18,10 @@ import static java.util.stream.Collectors.toList;
 public class PlayerControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world, double dt) {
+        move(gameData, world, dt);
+    }
+
+    private void move(GameData gameData, World world, double dt){
         float rotationSpeed = 300; // Degrees the player turns per second
         float movementSpeed = 150; // Units the player moves per second
         double fireRate = 0.2; // How fast the player shoots
@@ -45,13 +49,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
         player.setLastShotTime(player.getLastShotTime() + dt);
 
-            // Check if space is pressed and cooldown has elapsed
+        // Check if space is pressed and cooldown has elapsed
         if (gameData.getKeys().isDown(GameKeys.SPACE) && player.getLastShotTime() >= fireRate) {
             getBulletSPIs().stream().findFirst().ifPresent(spi -> {
                 world.addEntity(spi.createBullet(player, gameData));
-                });
+            });
 
-                // Reset the cooldown timer
+            // Reset the cooldown timer
             player.setLastShotTime(0);
         }
         if (player.getX() < 0) {

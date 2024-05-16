@@ -29,6 +29,10 @@ public class AsteroidProcessor implements IEntityProcessingService {
      */
     @Override
     public void process(GameData gameData, World world, double dt) {
+        move(gameData, world, dt);
+    }
+
+    private void move(GameData gameData, World world, double dt){
         int asteroidSpeed = 200;
         List<Asteroid> asteroids = new ArrayList<>();
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
@@ -65,7 +69,6 @@ public class AsteroidProcessor implements IEntityProcessingService {
             }
 
         }
-
     }
 
     /**

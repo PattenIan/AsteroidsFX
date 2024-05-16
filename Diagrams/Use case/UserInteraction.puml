@@ -1,0 +1,12 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+User --> (Start)
+User --> (Move playership)
+User --> (Close game)
+User --> (Collide)
+User --> (Shoot)
+
+
+note right of User : User as a player.
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam groupInheritance 4
+interface IEntitiyProcessingService{
+process()
+}
+interface IGamePluginService{
+start()
+stop()
+}
+interface IPostEntityProcessingService{
+process()
+}
+
+class Player
+class Enemy
+class Asteroid
+class Collision
+class Entity
+class Bullet
+class main
+
+together {
+    class Player
+    class Enemy
+    class Asteroid
+    class Collision
+}
+IEntitiyProcessingService .. together
+IEntitiyProcessingService <|... Enemy
+IEntitiyProcessingService <|.. Asteroid
+IEntitiyProcessingService <|.. Bullet
+
+IGamePluginService <|.. Player
+IGamePluginService <|.. Asteroid
+IGamePluginService <|.. Bullet
+
+A1 <|-- B1
+
+A2 <|-- B2
+A2 <|-- C2
+
+A3 <|-- B3
+A3 <|-- C3
+A3 <|-- D3
+
+A4 <|-- B4
+A4 <|-- C4
+A4 <|-- D4
+A4 <|-- E4
+IPostEntityProcessingService <|.. Collision
+
+
+
+
+
+
+
+
+@enduml
