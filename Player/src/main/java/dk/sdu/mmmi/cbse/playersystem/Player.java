@@ -9,11 +9,11 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 public class Player extends Entity {
     private double lastShotTime = 0; // Time since last shot
 
-    public double getLastShotTime() {
+    double getLastShotTime() {
         return lastShotTime;
     }
 
-    public void setLastShotTime(double lastShotTime) {
+    void setLastShotTime(double lastShotTime) {
         this.lastShotTime = lastShotTime;
     }
 }
