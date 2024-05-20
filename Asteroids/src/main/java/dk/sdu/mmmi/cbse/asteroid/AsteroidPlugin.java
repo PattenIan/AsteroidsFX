@@ -60,7 +60,7 @@ public class AsteroidPlugin implements IGamePluginService {
         int size = rnd.nextInt(10) + 20;
         float[] rndScales = new float[4];
         for (int i = 0; i < rndScales.length; i++) {
-            rndScales[i] = rndMultiplier.nextFloat(2)+0.5f;
+            rndScales[i] = rndMultiplier.nextFloat(1)+0.5f;
         }
         asteroid.setPolygonCoordinates(size * rndScales[0], 0,
                 size, -size,

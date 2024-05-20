@@ -11,6 +11,8 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -164,17 +166,15 @@ class Main {
     };
 
   private void updateScoreText() {
-        System.out.println();
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/score"))
                 .GET().build();
-
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             scoreText.setText("Score: " + response.body());
         } catch (IOException | InterruptedException exception) {
-            exception.printStackTrace();
+            scoreText.setText("Score: NOT FOUND");
         }
     }
 

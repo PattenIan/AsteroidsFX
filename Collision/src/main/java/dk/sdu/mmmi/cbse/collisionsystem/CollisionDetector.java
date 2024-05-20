@@ -8,6 +8,7 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -32,7 +33,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 }
 
                 // CollisionDetection
-                if (this.collides(entity1, entity2)) {
+                if (!this.collides(entity1, entity2)) {
                     if (entity1 instanceof Bullet && entity2 instanceof Asteroid) {
                         world.removeEntity(entity1);
                         points = 10;
@@ -44,7 +45,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         scoreUpdated = true;
                     }
                     if (entity1.getClass().equals(entity2.getClass())) {
-                        System.out.println(entity1.getClass() + "  " + entity2.getClass());
                         return;
                     }
                     entity1.takeDamage(entity2.getDamage());
@@ -59,7 +59,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                         System.out.println(httpResponse.body());
                     } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
 
                     }
                     finally{
