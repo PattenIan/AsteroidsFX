@@ -16,6 +16,8 @@ import static java.util.stream.Collectors.toList;
 
 
 public class PlayerControlSystem implements IEntityProcessingService {
+    private double lastShotTime = 0; // Time since last shot
+
     @Override
     public void process(GameData gameData, World world, double dt) {
         move(gameData, world, dt);
@@ -30,8 +32,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             return;
         }
         Player player = (Player) playerList.getFirst();
-        if(!player.isAlive())
-            world.removeEntity(player);
         // Multiplying by delta time to make the game framerate independent
         if (gameData.getKeys().isDown(GameKeys.LEFT)) {
             player.setRotation(player.getRotation() - rotationSpeed * dt);
@@ -47,16 +47,16 @@ public class PlayerControlSystem implements IEntityProcessingService {
             player.setY(player.getY() + changeY);
         }
 
-        player.setLastShotTime(player.getLastShotTime() + dt);
+        setLastShotTime(getLastShotTime() + dt);
 
         // Check if space is pressed and cooldown has elapsed
-        if (gameData.getKeys().isDown(GameKeys.SPACE) && player.getLastShotTime() >= fireRate) {
+        if (gameData.getKeys().isDown(GameKeys.SPACE) && getLastShotTime() >= fireRate) {
             getBulletSPIs().stream().findFirst().ifPresent(spi -> {
                 world.addEntity(spi.createBullet(player, gameData));
             });
 
             // Reset the cooldown timer
-            player.setLastShotTime(0);
+            setLastShotTime(0);
         }
         if (player.getX() < 0) {
             player.setX(1);
@@ -73,6 +73,14 @@ public class PlayerControlSystem implements IEntityProcessingService {
         if (player.getY() > gameData.getDisplayHeight()) {
             player.setY(gameData.getDisplayHeight()-1);
         }
+    }
+
+    double getLastShotTime() {
+        return lastShotTime;
+    }
+
+    void setLastShotTime(double lastShotTime) {
+        this.lastShotTime = lastShotTime;
     }
 
     private Collection<? extends BulletSPI> getBulletSPIs() {

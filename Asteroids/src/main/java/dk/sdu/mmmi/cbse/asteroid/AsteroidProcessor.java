@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AsteroidProcessor implements IEntityProcessingService {
-
     private IAsteroidSplitter asteroidSplitter = new AsteroidSplitterImpl();
 
     /**
@@ -39,14 +38,7 @@ public class AsteroidProcessor implements IEntityProcessingService {
             asteroids.add((Asteroid) asteroid);
         }
         for (Asteroid asteroid : asteroids) {
-            if(!asteroid.isAlive()){
-                System.out.println("Dying asteroid");
-                if(asteroid.getRadius() > 10){
-                    //System.out.println("Big asteroid: " + asteroid.getRadius());
-                    asteroidSplitter.createSplitAsteroid(asteroid, world);}
-                world.removeEntity(asteroid);
-            }
-            double changeX = Math.cos(Math.toRadians(asteroid.getRotation())) + asteroidSpeed * dt * asteroid.getSpeedModifier();
+            double changeX = Math.cos(Math.toRadians(asteroid.getRotation())) + asteroidSpeed * dt;
             double changeY = Math.sin(Math.toRadians(asteroid.getRotation())) + asteroidSpeed * dt;
 
             asteroid.setX(asteroid.getX() + changeX * 0.5);
@@ -70,7 +62,6 @@ public class AsteroidProcessor implements IEntityProcessingService {
 
         }
     }
-
     /**
      * Dependency Injection using OSGi Declarative Services
      */

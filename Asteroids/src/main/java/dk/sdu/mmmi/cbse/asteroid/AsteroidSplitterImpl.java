@@ -8,7 +8,6 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import java.util.Random;
 
 /**
- *
  * @author corfixen
  */
 public class AsteroidSplitterImpl implements IAsteroidSplitter {
@@ -18,12 +17,14 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
      * preconditions:
      * - e must be non-null and should be an Asteroid
      * - world must be non-null and should be able to add new entities (Asteroids)
-     *
+     * <p>
      * postconditions:
      * - returns if e is not an asteroid
      * - calls createSmallerAsteroids method
      * - Based on the original asteroid the new asteroids are half the size and go in opposite directions from eachother
      * - The new asteroids are added to the world.
+     *
+     * @return
      */
     @Override
     public void createSplitAsteroid(Entity e, World world) {
@@ -32,14 +33,15 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         //Cast to e to Asteroid and get radius
         Asteroid ogAsteroid = (Asteroid) e;
         float ogRad = ogAsteroid.getRadius();
-
+        if (ogRad < 10)
+            return;
         //Instantiate two new asteroids in for loop
-        for (int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             Asteroid newAsteroid;
             if (i == 0) {
-                newAsteroid = createSmallerAsteroid(ogRad/2, ogAsteroid, -1);
+                newAsteroid = createSmallerAsteroid(ogRad / 2, ogAsteroid, 0);
             } else {
-                newAsteroid = createSmallerAsteroid(ogRad/2, ogAsteroid, 1);
+                newAsteroid = createSmallerAsteroid(ogRad / 2, ogAsteroid, 180);
             }
             world.addEntity(newAsteroid);
         }
@@ -51,22 +53,21 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
      * - Size should be non-null and be positive
      * - originalAsteroid should be non-null and an asteroid
      * - speedModifier should be not zero.
-     *
+     * <p>
      * postconditions:
      * - Create a new, randomized, and smaller asteroid based on the previous asteroid
      * - The speedmodifier, damage and health are set, so they're not zero .
      */
-    public Asteroid createSmallerAsteroid(float size, Asteroid originalAsteroid, int speedModifier) {
+    public Asteroid createSmallerAsteroid(float size, Asteroid originalAsteroid, double rotation) {
         Random rnd = new Random();
         Asteroid asteroid = new Asteroid();
         asteroid.setRadius(size);
         asteroid.setHealth(1);
         asteroid.setDamage(originalAsteroid.getDamage());
-        if(speedModifier == 0){ speedModifier = 1; }
-        asteroid.setSpeedModifier(speedModifier);
+        asteroid.setRotation(asteroid.getRotation() - rotation);
         float[] rndScales = new float[4];
         for (int i = 0; i < rndScales.length; i++) {
-            rndScales[i] = rnd.nextFloat() * 2 + 0.5f;
+            rndScales[i] = rnd.nextFloat() * 1 + 0.5f;
         }
 
         asteroid.setPolygonCoordinates(size * rndScales[0], 0,

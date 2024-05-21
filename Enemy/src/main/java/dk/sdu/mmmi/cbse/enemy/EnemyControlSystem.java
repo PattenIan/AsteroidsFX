@@ -14,6 +14,8 @@ import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
 
 public class EnemyControlSystem implements IEntityProcessingService {
+    private double lastShotTime = 0; // Time since last shot
+
     @Override
     public void process(GameData gameData, World world, double deltaTime) {
         Random randint = new Random();
@@ -28,17 +30,14 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             enemy.setRotation(enemy.getRotation() + (randint.nextDouble(5)-2) * moveSpeed * deltaTime);
 
-            ((Enemy) enemy).setLastShotTime(((Enemy) enemy).getLastShotTime() + deltaTime);
-            if(!enemy.isAlive())
-                world.removeEntity(enemy);
+            setLastShotTime(getLastShotTime() + deltaTime);
             // Check if space is pressed and cooldown has elapsed
-            if (((Enemy) enemy).getLastShotTime() >= fireRate) {
+            if (getLastShotTime() >= fireRate) {
                 getBulletSPIs().stream().findFirst().ifPresent(spi -> {
                     world.addEntity(spi.createBullet(enemy, gameData));
                 });
-
                 // Reset the cooldown timer
-                ((Enemy) enemy).setLastShotTime(0);
+                setLastShotTime(0);
             }
 
 
@@ -60,6 +59,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         }
     }
+
+    public double getLastShotTime() {
+        return lastShotTime;
+    }
+
+    public void setLastShotTime(double lastShotTime) {
+        this.lastShotTime = lastShotTime;
+    }
+
     private Collection<? extends BulletSPI> getBulletSPIs() {
         return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }

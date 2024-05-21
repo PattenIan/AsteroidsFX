@@ -2,10 +2,13 @@
 'https://plantuml.com/use-case-diagram
 
 User --> (Start)
+User --> (Shoot)
 User --> (Move playership)
 User --> (Close game)
 User --> (Collide)
-User --> (Shoot)
+(Collide) --> (Die)
+(Die) --> (Start)
+(Die) --> (Close game)
 
 
 note right of User : User as a player.
